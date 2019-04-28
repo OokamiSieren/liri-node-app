@@ -1,8 +1,12 @@
+// require the .env
 require("dotenv").config();
+//require the keys.js for security of spotify api id and key
 var keys = require("./keys.js");
  //moment format
  var moment = require('moment');
-// var spotify = new Spotify(keys.spotify);
+ // spotify reqiure
+ var Spotify = require('node-spotify-api');
+ //require axios
 var axios = require("axios");
 // variable for action in each function
 var action = process.argv[2];
@@ -56,3 +60,21 @@ axios.get(queryUrl).then(
 
    });
     }; //end of concert-this function
+
+    function spotifyThis () {
+       //variable for spotify key
+       var spotify = new Spotify(keys.spotify);
+       // variable for user song input
+       var song = process.argv.slice(3).join(" ");
+
+       spotify.search({ type: 'track', query: song }, function(err, data) {
+         if (err) {
+           return console.log('Error occurred: ' + err);
+         }
+        
+       console.log("The artist for " + song + " is " + data.tracks.items[0].artists[0].name + ". "); 
+       console.log("Here is a preview: " + data.tracks.items[0].preview_url)
+       console.log("The name of the album that " + song + " is from: " + data.tracks.items[0].album.name + ". ");
+       });
+
+    };//end of spotify-this
