@@ -8,6 +8,9 @@ var keys = require("./keys.js");
  var Spotify = require('node-spotify-api');
  //require axios
 var axios = require("axios");
+// fs package to write and recieve packages
+var fs = require("fs");
+
 // variable for action in each function
 var action = process.argv[2];
 // set switch to run through the functions
@@ -23,12 +26,21 @@ switch(action) {
    case "spotify-this":
    spotifyThis();
    break;
+
+   case "do-what-it-says":
+   doWhatItSays();
+   break;
+
 }
 
 // movie-this
 function movieThis() {
 // set variable to take user input
 var movieName = process.argv.slice(3).join(" ");
+// default variable if no user input
+if (movieName == "") {
+movieName = "Mr. Nobody";
+}
 // call omdbi api searching the movie name
 var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
@@ -66,7 +78,11 @@ axios.get(queryUrl).then(
        var spotify = new Spotify(keys.spotify);
        // variable for user song input
        var song = process.argv.slice(3).join(" ");
-
+       // default variable if no user input
+if (song == "") {
+   song = "The Sign";
+   }
+// searching spotify
        spotify.search({ type: 'track', query: song }, function(err, data) {
          if (err) {
            return console.log('Error occurred: ' + err);
@@ -78,3 +94,33 @@ axios.get(queryUrl).then(
        });
 
     };//end of spotify-this
+
+// do-what-it-says
+    function doWhatItSays() {
+      fs.readFile("random.txt", "utf8", function(error, data) {
+         if (error) {
+            return console.log(error);
+          }
+      //variable to take text from random.txt and split it
+      var output = data.split(",");
+      // new action variable
+      var action = output[0];
+      // new input varible 
+      var textInput = output[1];
+      console.log(action,textInput);
+      //call the spotify-this function to run new input
+       spotifyThis(textInput);
+      });
+
+    };// end of do-what-it-says
+
+    // writing a log of user data
+    fs.appendFile("log.txt", action, function(err) {
+      if (error) {
+         return console.log(error);
+       }
+
+    });
+
+    
+
