@@ -24,7 +24,7 @@ switch(action) {
    break;
    
    case "spotify-this":
-   spotifyThis();
+   spotifyThis(process.argv.slice(3).join(" "));
    break;
 
    case "do-what-it-says":
@@ -73,14 +73,14 @@ axios.get(queryUrl).then(
    });
     }; //end of concert-this function
 
-    function spotifyThis () {
+    function spotifyThis (song) {
        //variable for spotify key
        var spotify = new Spotify(keys.spotify);
        // variable for user song input
-       var song = process.argv.slice(3).join(" ");
+      //  var song = process.argv.slice(3).join(" ");
        // default variable if no user input
 if (song == "") {
-   song = "The Sign";
+   song = "The Sign by Ace of Base";
    }
 // searching spotify
        spotify.search({ type: 'track', query: song }, function(err, data) {
@@ -104,23 +104,24 @@ if (song == "") {
       //variable to take text from random.txt and split it
       var output = data.split(",");
       // new action variable
-      var action = output[0];
+       action = output[0];
       // new input varible 
       var textInput = output[1];
       console.log(action,textInput);
       //call the spotify-this function to run new input
        spotifyThis(textInput);
+      
       });
 
     };// end of do-what-it-says
 
     // writing a log of user data
-    fs.appendFile("log.txt", action, function(err) {
-      if (error) {
-         return console.log(error);
-       }
+   //  fs.appendFile("log.txt", action, function(err) {
+   //    if (error) {
+   //       return console.log(error);
+   //     }
 
-    });
+   //  });
 
     
 
