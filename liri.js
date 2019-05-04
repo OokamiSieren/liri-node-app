@@ -2,7 +2,7 @@
 require("dotenv").config();
 //require the keys.js for security of spotify api id and key
 var keys = require("./keys.js");
- //moment format
+ //moment formnodat
  var moment = require('moment');
  // spotify reqiure
  var Spotify = require('node-spotify-api');
@@ -76,8 +76,7 @@ axios.get(queryUrl).then(
     function spotifyThis (song) {
        //variable for spotify key
        var spotify = new Spotify(keys.spotify);
-       // variable for user song input
-      //  var song = process.argv.slice(3).join(" ");
+       
        // default variable if no user input
 if (song == "") {
    song = "The Sign by Ace of Base";
@@ -115,13 +114,13 @@ if (song == "") {
 
     };// end of do-what-it-says
 
-    // writing a log of user data
-   //  fs.appendFile("log.txt", action, function(err) {
-   //    if (error) {
-   //       return console.log(error);
-   //     }
+    //  writing a log of user data
+    //  fs.appendFile("log.txt", action, function(err) {
+    //    if (error) {
+    //       return console.log(error);
+    //    }
 
-   //  });
+    //  });
 
     
 
